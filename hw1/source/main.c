@@ -33,6 +33,7 @@ typedef struct{
 typedef struct{
     Customer customer;
     Product products[20];
+    int SALES_PRODUCTS_INDEX;
     int maxPrice;
 }Sales;
 
@@ -145,9 +146,13 @@ void saleProducts() {
 }
 
 void showSales() {
-    printf("");
-    for (int i = 0; i < SALES_INDEX; ++i) {
-
+    //printf("%s\n", sales[0].customer.name);
+    for (int i = 0; i < SALES_INDEX; i++) {
+        printf("Customer name: %s %s\n", sales[i].customer.name, sales[i].customer.lastName);
+        printf("list of products: \n");
+        for (int j = 0; j < sales[i].SALES_PRODUCTS_INDEX; j++) {
+            printf("%s %s\n", sales[i].products[j].name, sales[i].products[j].brand);
+        }
     }
 }
 
