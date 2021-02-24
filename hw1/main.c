@@ -42,6 +42,9 @@ typedef struct{
  */
 void addNewCustomer();
 void addNewProduct();
+void showProducts();
+void showMainMenu();
+void showCustomers();
 
 void setIntValue(int *value, int min, int max);
 
@@ -61,47 +64,47 @@ static int SALES_INDEX = 0;
  * Main method
  */
 int main() {
+    int input = 0;
 
-    printf("Enter your selection:\n");
-    printf("1. Add product\n");
-    printf("2. Add customer\n");
-    printf("3. Sale product\n");
-    printf("4. Show products\n");
-    printf("5. Show customers\n");
-    printf("6. Show sales\n");
-    printf("7. Show sales by id\n");
-    printf("8. Show sales by day\n");
+    while (input != 9){
+        showMainMenu();
 
-    printf("Your selection: ");
+        scanf("%d", &input);
 
-    int input;
-    scanf("%d", &input);
+        switch (input) {
+            case 1:
+                addNewProduct();
+                break;
+            case 2:
+                addNewCustomer();
+                break;
+            case 3:
+                break;
+            case 4:
+                showProducts();
+                break;
+            case 5:
+                showCustomers();
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                printf("Bye");
+                break;
+            default:
+                printf("Wrong input!\n");
 
-    switch (input) {
-        case 1:
-            addNewProduct();
-            break;
-        case 2:
-            addNewCustomer();
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        case 6:
-            break;
-        case 7:
-            break;
-        case 8:
-            break;
-
+        }
     }
 
-    printf("%s %s %d %d", products[0].name, products[0].brand, products[0].type, products[0].id);
     return 0;
 }
+
+
 
 /**
  * Functions
@@ -160,6 +163,54 @@ void addNewProduct() {
 
         products[PRODUCTS_INDEX++] = product;
     }
+}
+
+void showCustomers() {
+    printf("Gender    Name    lastName    Age    Id\n");
+    for (int i = 0; i < CUSTOMERS_INDEX; ++i) {
+        switch (customers[i].gender) {
+            case 0:
+                printf("Male    ");
+                break;
+            case 1:
+                printf("Female    ");
+                break;
+        }
+        printf("%s    %s    %d    %d\n", customers[i].name, customers[i].lastName, customers[i].age, customers[i].id);
+    }
+}
+
+void showProducts() {
+    printf("Type    Name    Brand   Price   Id\n");
+    for (int i = 0; i < PRODUCTS_INDEX; ++i) {
+        switch (products[i].type) {
+            case 0:
+                printf("Food    ");
+                break;
+            case 1:
+                printf("Clothing    ");
+                break;
+            case 2:
+                printf("Chemicals   ");
+                break;
+        }
+        printf("%s    %s    %d    %d\n", products[i].name, products[i].brand, products[i].price, products[i].id);
+    }
+
+}
+
+void showMainMenu(){
+    printf("Enter your selection:\n");
+    printf("1. Add product\n");
+    printf("2. Add customer\n");
+    printf("3. Sale product\n");
+    printf("4. Show products\n");
+    printf("5. Show customers\n");
+    printf("6. Show sales\n");
+    printf("7. Show sales by id\n");
+    printf("8. Show sales by day\n");
+    printf("9. Exit\n");
+    printf("Your selection: ");
 }
 
 /**
