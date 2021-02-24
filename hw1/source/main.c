@@ -31,8 +31,8 @@ typedef struct{
 }Product;
 
 typedef struct{
-    int customerId;
-    int productsId[20];
+    Customer customer;
+    Product products[20];
     int maxPrice;
 }Sales;
 
@@ -48,6 +48,14 @@ void showCustomers();
 
 // method using to set enumeration values
 void setIntValue(int *value, int min, int max);
+
+void saleProducts();
+
+void createNewCart();
+
+void addNewProductToExitingCart();
+
+void showSales();
 
 /**
  * Global values
@@ -80,6 +88,7 @@ int main() {
                 addNewCustomer();
                 break;
             case 3:
+                saleProducts();
                 break;
             case 4:
                 showProducts();
@@ -103,6 +112,62 @@ int main() {
     }
 
     return 0;
+}
+
+void saleProducts() {
+    int input = 0;
+    while (input != 4){
+
+        printf("1. Create new product cart: \n");
+        printf("2. Add new product to the exiting product cart: \n");
+        printf("3. Show sales:\n");
+        printf("4. Exit\n");
+
+        scanf("%d", &input);
+        switch (input) {
+            case 1:
+                createNewCart();
+                break;
+            case 2:
+                addNewProductToExitingCart();
+                break;
+            case 3:
+                showSales();
+                break;
+            case 4:
+                printf("Bye!\n");
+                break;
+            default:
+                printf("Wrong input!\n");
+        }
+    }
+
+}
+
+void showSales() {
+    printf("");
+    for (int i = 0; i < SALES_INDEX; ++i) {
+
+    }
+}
+
+void addNewProductToExitingCart() {
+
+}
+
+void createNewCart() {
+    printf("Select from customers:\n");
+    showCustomers();
+
+    int input;
+    scanf("%d", &input);
+
+    if (input - 1 < CUSTOMERS_INDEX && input > -1){
+        Sales sale;
+        sale.customer = customers[input - 1];
+
+        sales[SALES_INDEX++] = sale;
+    }
 }
 
 /**
@@ -167,6 +232,7 @@ void addNewProduct() {
 void showCustomers() {
     printf("Gender    Name    lastName    Age    Id\n");
     for (int i = 0; i < CUSTOMERS_INDEX; ++i) {
+        printf("%d: ", i + 1);
         switch (customers[i].gender) {
             case 0:
                 printf("Male    ");
@@ -180,8 +246,9 @@ void showCustomers() {
 }
 
 void showProducts() {
-    printf("Type    Name    Brand   Price   Id\n");
+    printf("   Type    Name    Brand   Price   Id\n");
     for (int i = 0; i < PRODUCTS_INDEX; ++i) {
+        printf("%d: ", i + 1);
         switch (products[i].type) {
             case 0:
                 printf("Food    ");
