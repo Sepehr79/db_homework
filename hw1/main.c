@@ -46,6 +46,7 @@ void showProducts();
 void showMainMenu();
 void showCustomers();
 
+// method using to set enumeration values
 void setIntValue(int *value, int min, int max);
 
 /**
@@ -103,8 +104,6 @@ int main() {
 
     return 0;
 }
-
-
 
 /**
  * Functions
