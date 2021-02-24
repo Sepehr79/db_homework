@@ -43,6 +43,8 @@ typedef struct{
 void addNewCustomer();
 void addNewProduct();
 
+void setIntValue(int *value, int min, int max);
+
 /**
  * Global values
  */
@@ -97,7 +99,7 @@ int main() {
 
     }
 
-    printf("%s %s %d %d %d", customers[0].name, customers[0].lastName, customers[0].age, customers[0].id, customers[0].gender);
+    printf("%s %s %d %d", products[0].name, products[0].brand, products[0].type, products[0].id);
     return 0;
 }
 
@@ -125,12 +127,7 @@ void addNewCustomer() {
         printf("2. Female\n");
         printf("Your selection:");
         
-
-        int input;
-        scanf("%d", &input);
-        if (input > 0 && input < 3){
-            customer.gender = input - 1;
-        }
+        setIntValue(&customer.gender, 1, 2);
 
         customers[CUSTOMERS_INDEX++] = customer;
     }
@@ -138,5 +135,46 @@ void addNewCustomer() {
 }
 
 void addNewProduct() {
+    if (PRODUCTS_INDEX < 100){
+        Product product;
 
+        printf("Select product type\n");
+        printf("1. Food\n");
+        printf("2. Clothing\n");
+        printf("3. Chemicals\n");
+        printf("Your selection: ");
+
+        setIntValue(&product.type, 1, 3);
+
+        printf("Enter product name: ");
+        scanf("%s", product.name);
+
+        printf("Enter product brand: ");
+        scanf("%s", product.brand);
+
+        printf("Enter product price: ");
+        scanf("%d", &product.price);
+
+        printf("Enter product id: ");
+        scanf("%d", &product.id);
+
+        products[PRODUCTS_INDEX++] = product;
+    }
+}
+
+/**
+ * Setter for enumeration values
+ * @param value enum type number
+ * @param min minimum value of enum type
+ * @param max maximum value of enum type
+ */
+void setIntValue(int *value, int min, int max){
+    int input;
+    scanf("%d", &input);
+    if (input >= min && input <= max){
+        *value = input-1;
+    } else{
+        printf("Wrong input number\n");
+        *value = 0;
+    }
 }
