@@ -32,7 +32,7 @@ typedef struct{
 
 typedef struct{
     Customer customer;
-    Product products[20];
+    Product *products[20];
     int SALES_PRODUCTS_INDEX;
     int maxPrice;
 }Sales;
@@ -46,17 +46,14 @@ void addNewProduct();
 void showProducts();
 void showMainMenu();
 void showCustomers();
+void saleProducts();
+void createNewCart();
+void addNewProductToExitingCart();
+void showSales();
 
 // method using to set enumeration values
 void setIntValue(int *value, int min, int max);
 
-void saleProducts();
-
-void createNewCart();
-
-void addNewProductToExitingCart();
-
-void showSales();
 
 /**
  * Global values
@@ -146,18 +143,39 @@ void saleProducts() {
 }
 
 void showSales() {
-    //printf("%s\n", sales[0].customer.name);
     for (int i = 0; i < SALES_INDEX; i++) {
+        printf("%d: ", i + 1);
         printf("Customer name: %s %s\n", sales[i].customer.name, sales[i].customer.lastName);
         printf("list of products: \n");
         for (int j = 0; j < sales[i].SALES_PRODUCTS_INDEX; j++) {
-            printf("%s %s\n", sales[i].products[j].name, sales[i].products[j].brand);
+            printf("%s %s\n", sales[i].products[j]->name, sales[i].products[j]->brand);
         }
     }
 }
 
 void addNewProductToExitingCart() {
+    printf("Select an exiting cart:\n");
+    showSales();
+    printf("Your selection: ");
 
+    int sales_index;
+    scanf("%d", &sales_index);
+
+    if (sales_index > 0 && sales_index <= SALES_INDEX){
+        sales_index--;
+    }
+
+    printf("Select an exiting product:\n");
+    showProducts();
+    printf("Your selection: ");
+
+    int product_index;
+    scanf("%d", &product_index);
+
+    if (product_index > 0 && product_index <= PRODUCTS_INDEX){
+        product_index--;
+    }
+    sales[sales_index].products[sales[sales_index].SALES_PRODUCTS_INDEX++] = &products[product_index];
 }
 
 void createNewCart() {
@@ -168,7 +186,7 @@ void createNewCart() {
     scanf("%d", &input);
 
     if (input - 1 < CUSTOMERS_INDEX && input > -1){
-        Sales sale;
+        Sales sale = {.SALES_PRODUCTS_INDEX = 0};
         sale.customer = customers[input - 1];
 
         sales[SALES_INDEX++] = sale;
