@@ -35,6 +35,7 @@ typedef struct{
     Product *products[20];
     int SALES_PRODUCTS_INDEX;
     int maxPrice;
+    int id;
 }Sales;
 
 
@@ -54,6 +55,8 @@ void showSales();
 // method using to set enumeration values
 void setIntValue(int *value, int min, int max);
 
+
+void showSalesById();
 
 /**
  * Global values
@@ -95,8 +98,10 @@ int main() {
                 showCustomers();
                 break;
             case 6:
+                showSales();
                 break;
             case 7:
+                showSalesById();
                 break;
             case 8:
                 break;
@@ -110,6 +115,31 @@ int main() {
     }
 
     return 0;
+}
+
+
+
+/**
+ * Functions
+ */
+
+void showSalesById() {
+    printf("Enter cart id\n");
+
+    int id;
+    scanf("%d", &id);
+
+    for (int i = 0; i < SALES_INDEX; i++) {
+        if (sales[i].id == id){
+            printf("Customer:%s %s\nList of products:\n", sales[i].customer.name, sales[i].customer.lastName);
+            for (int j = 0; j < sales[i].SALES_PRODUCTS_INDEX; j++) {
+                printf("%s %s", sales[i].products[j]->name, sales[i].products[j]->brand);
+            }
+            printf("Max price:%d", sales[i].maxPrice);
+            return;
+        }
+    }
+    printf("Cart not found");
 }
 
 void saleProducts() {
@@ -145,11 +175,13 @@ void saleProducts() {
 void showSales() {
     for (int i = 0; i < SALES_INDEX; i++) {
         printf("%d: ", i + 1);
-        printf("Customer name: %s %s\n", sales[i].customer.name, sales[i].customer.lastName);
+        printf("Customer name: %s %s\nCart id: %d\n", sales[i].customer.name,
+               sales[i].customer.lastName, sales[i].id);
         printf("list of products: \n");
         for (int j = 0; j < sales[i].SALES_PRODUCTS_INDEX; j++) {
             printf("%s %s\n", sales[i].products[j]->name, sales[i].products[j]->brand);
         }
+        printf("Max price: %d\n", sales[i].maxPrice);
     }
 }
 
@@ -176,6 +208,7 @@ void addNewProductToExitingCart() {
         product_index--;
     }
     sales[sales_index].products[sales[sales_index].SALES_PRODUCTS_INDEX++] = &products[product_index];
+    sales[sales_index].maxPrice += products[product_index].price;
 }
 
 void createNewCart() {
@@ -185,17 +218,19 @@ void createNewCart() {
     int input;
     scanf("%d", &input);
 
+    printf("Enter cart id:\n");
+    int id;
+    scanf("%d", &id);
+
     if (input - 1 < CUSTOMERS_INDEX && input > -1){
-        Sales sale = {.SALES_PRODUCTS_INDEX = 0};
+        Sales sale = {.SALES_PRODUCTS_INDEX = 0, .maxPrice = 0};
         sale.customer = customers[input - 1];
+        sale.id = id;
 
         sales[SALES_INDEX++] = sale;
     }
 }
 
-/**
- * Functions
- */
 void addNewCustomer() {
     if (CUSTOMERS_INDEX < 100){
         Customer customer;
