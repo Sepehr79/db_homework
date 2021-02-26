@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 /**
  * Enumerations
@@ -123,8 +124,6 @@ int main() {
     }
     return 0;
 }
-
-
 
 /**
  * Functions
@@ -348,6 +347,9 @@ void addNewProductToExitingCart() {
 
     if (sales_index > 0 && sales_index <= SALES_INDEX){
         sales_index--;
+    }else{
+        printf("Wrong input!");
+        return;
     }
 
     printf("Select an exiting product:\n");
@@ -359,9 +361,27 @@ void addNewProductToExitingCart() {
 
     if (product_index > 0 && product_index <= PRODUCTS_INDEX){
         product_index--;
+    } else{
+        printf("Wrong input!");
+        return;
     }
-    sales[sales_index].products[sales[sales_index].SALES_PRODUCTS_INDEX++] = &products[product_index];
-    sales[sales_index].maxPrice += products[product_index].price;
+
+    // make a copy from selected product
+    static Product product;
+    strcpy(product.name, products[product_index].name);
+    strcpy(product.brand, products[product_index].brand);
+    product.price = products[product_index].price;
+    product.id = products[product_index].id;
+    product.type = products[product_index].type;
+
+    sales[sales_index].products[sales[sales_index].SALES_PRODUCTS_INDEX++] = &product;//&products[product_index];
+    sales[sales_index].maxPrice += product.price;//products[product_index].price;
+
+    // deleting selected product from array
+    for (int i = product_index; i < PRODUCTS_INDEX; i++) {
+        products[i] = products[i+1];
+    }
+    PRODUCTS_INDEX--;
 }
 
 void showMainMenu(){
