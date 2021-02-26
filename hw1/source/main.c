@@ -14,6 +14,12 @@ enum ProductType{
 /**
  * Structs
  */
+typedef struct {
+    int day;
+    int month;
+    int year;
+}Date;
+
 typedef struct{
     char name[30];
     char lastName[30];
@@ -34,6 +40,7 @@ typedef struct{
     Customer customer;
     Product *products[20];
     int SALES_PRODUCTS_INDEX;
+    Date date;
     int maxPrice;
     int id;
 }Sales;
@@ -51,12 +58,11 @@ void saleProducts();
 void createNewCart();
 void addNewProductToExitingCart();
 void showSales();
+void showSalesById();
+void showSalesByDay();
 
 // method using to set enumeration values
 void setIntValue(int *value, int min, int max);
-
-
-void showSalesById();
 
 /**
  * Global values
@@ -104,6 +110,7 @@ int main() {
                 showSalesById();
                 break;
             case 8:
+                showSalesByDay();
                 break;
             case 9:
                 printf("Bye");
@@ -113,7 +120,6 @@ int main() {
 
         }
     }
-
     return 0;
 }
 
@@ -122,6 +128,23 @@ int main() {
 /**
  * Functions
  */
+void showSalesByDay() {
+    printf("Enter date with [{year} {month} {day}] format: ");
+    int day, month, year;
+
+    scanf("%d %d %d", &year, &month, &day);
+
+    for (int i = 0; i < SALES_INDEX; i++) {
+        if (sales[i].date.day == day && sales[i].date.month == month && sales[i].date.year == year){
+            printf("Customer: %s %s\n", sales[i].customer.name, sales[i].customer.lastName);
+            printf("List of products: \n");
+            for (int j = 0; j < sales[i].SALES_PRODUCTS_INDEX; j++) {
+                printf("name: %s\nbrand: %s\n", sales[i].products[j]->name, sales[i].products[j]->brand);
+                printf("max price: %d\n", sales[i].maxPrice);
+            }
+        }
+    }
+}
 
 void showSalesById() {
     printf("Enter cart id\n");
@@ -182,6 +205,7 @@ void showSales() {
             printf("%s %s\n", sales[i].products[j]->name, sales[i].products[j]->brand);
         }
         printf("Max price: %d\n", sales[i].maxPrice);
+        printf("Date: %d / %d / %d\n", sales[i].date.year, sales[i].date.month, sales[i].date.day);
     }
 }
 
@@ -218,14 +242,30 @@ void createNewCart() {
     int input;
     scanf("%d", &input);
 
-    printf("Enter cart id:\n");
+    printf("Enter cart id:");
     int id;
     scanf("%d", &id);
+
+    printf("Enter number of day: ");
+    int day;
+    scanf("%d", &day);
+
+    printf("Enter number of month: ");
+    int month;
+    scanf("%d", &month);
+
+    printf("Enter number of year: ");
+    int year;
+    scanf("%d", &year);
 
     if (input - 1 < CUSTOMERS_INDEX && input > -1){
         Sales sale = {.SALES_PRODUCTS_INDEX = 0, .maxPrice = 0};
         sale.customer = customers[input - 1];
         sale.id = id;
+
+        sale.date.day = day;
+        sale.date.month = month;
+        sale.date.year = year;
 
         sales[SALES_INDEX++] = sale;
     }
