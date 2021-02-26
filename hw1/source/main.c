@@ -83,6 +83,7 @@ int main() {
     int input = 0;
 
     while (input != 9){
+
         showMainMenu();
 
         scanf("%d", &input);
@@ -128,41 +129,60 @@ int main() {
 /**
  * Functions
  */
-void showSalesByDay() {
-    printf("Enter date with [{year} {month} {day}] format: ");
-    int day, month, year;
+void addNewProduct() {
+    if (PRODUCTS_INDEX < 100){
+        Product product;
 
-    scanf("%d %d %d", &year, &month, &day);
+        printf("Select product type\n");
+        printf("1. Food\n");
+        printf("2. Clothing\n");
+        printf("3. Chemicals\n");
+        printf("Your selection: ");
 
-    for (int i = 0; i < SALES_INDEX; i++) {
-        if (sales[i].date.day == day && sales[i].date.month == month && sales[i].date.year == year){
-            printf("Customer: %s %s\n", sales[i].customer.name, sales[i].customer.lastName);
-            printf("List of products: \n");
-            for (int j = 0; j < sales[i].SALES_PRODUCTS_INDEX; j++) {
-                printf("name: %s\nbrand: %s\n", sales[i].products[j]->name, sales[i].products[j]->brand);
-                printf("max price: %d\n", sales[i].maxPrice);
-            }
-        }
+        setIntValue(&product.type, 1, 3);
+
+        printf("Enter product name: ");
+        scanf("%s", product.name);
+
+        printf("Enter product brand: ");
+        scanf("%s", product.brand);
+
+        printf("Enter product price: ");
+        scanf("%d", &product.price);
+
+        printf("Enter product id: ");
+        scanf("%d", &product.id);
+
+        products[PRODUCTS_INDEX++] = product;
     }
 }
 
-void showSalesById() {
-    printf("Enter cart id\n");
+void addNewCustomer() {
+    if (CUSTOMERS_INDEX < 100){
+        Customer customer;
 
-    int id;
-    scanf("%d", &id);
+        printf("Enter customer name:");
+        scanf("%s", customer.name);
 
-    for (int i = 0; i < SALES_INDEX; i++) {
-        if (sales[i].id == id){
-            printf("Customer:%s %s\nList of products:\n", sales[i].customer.name, sales[i].customer.lastName);
-            for (int j = 0; j < sales[i].SALES_PRODUCTS_INDEX; j++) {
-                printf("%s %s", sales[i].products[j]->name, sales[i].products[j]->brand);
-            }
-            printf("Max price:%d", sales[i].maxPrice);
-            return;
-        }
+        printf("Enter customer lastName:");
+        scanf("%s", customer.lastName);
+
+        printf("Enter customer age: ");
+        scanf("%d", &customer.age);
+
+        printf("Enter customer id: ");
+        scanf("%d", &customer.id);
+
+        printf("Select customer gender:\n");
+        printf("1. Male\n");
+        printf("2. Female\n");
+        printf("Your selection:");
+
+        setIntValue(&customer.gender, 1, 2);
+
+        customers[CUSTOMERS_INDEX++] = customer;
     }
-    printf("Cart not found");
+
 }
 
 void saleProducts() {
@@ -195,6 +215,42 @@ void saleProducts() {
 
 }
 
+void showProducts() {
+    printf("   Type    Name    Brand   Price   Id\n");
+    for (int i = 0; i < PRODUCTS_INDEX; ++i) {
+        printf("%d: ", i + 1);
+        switch (products[i].type) {
+            case 0:
+                printf("Food    ");
+                break;
+            case 1:
+                printf("Clothing    ");
+                break;
+            case 2:
+                printf("Chemicals   ");
+                break;
+        }
+        printf("%s    %s    %d    %d\n", products[i].name, products[i].brand, products[i].price, products[i].id);
+    }
+
+}
+
+void showCustomers() {
+    printf("Gender    Name    lastName    Age    Id\n");
+    for (int i = 0; i < CUSTOMERS_INDEX; ++i) {
+        printf("%d: ", i + 1);
+        switch (customers[i].gender) {
+            case 0:
+                printf("Male    ");
+                break;
+            case 1:
+                printf("Female    ");
+                break;
+        }
+        printf("%s    %s    %d    %d\n", customers[i].name, customers[i].lastName, customers[i].age, customers[i].id);
+    }
+}
+
 void showSales() {
     for (int i = 0; i < SALES_INDEX; i++) {
         printf("%d: ", i + 1);
@@ -209,30 +265,41 @@ void showSales() {
     }
 }
 
-void addNewProductToExitingCart() {
-    printf("Select an exiting cart:\n");
-    showSales();
-    printf("Your selection: ");
+void showSalesById() {
+    printf("Enter cart id\n");
 
-    int sales_index;
-    scanf("%d", &sales_index);
+    int id;
+    scanf("%d", &id);
 
-    if (sales_index > 0 && sales_index <= SALES_INDEX){
-        sales_index--;
+    for (int i = 0; i < SALES_INDEX; i++) {
+        if (sales[i].id == id){
+            printf("Customer:%s %s\nList of products:\n", sales[i].customer.name, sales[i].customer.lastName);
+            for (int j = 0; j < sales[i].SALES_PRODUCTS_INDEX; j++) {
+                printf("%s %s", sales[i].products[j]->name, sales[i].products[j]->brand);
+            }
+            printf("Max price:%d", sales[i].maxPrice);
+            return;
+        }
     }
+    printf("Cart not found");
+}
 
-    printf("Select an exiting product:\n");
-    showProducts();
-    printf("Your selection: ");
+void showSalesByDay() {
+    printf("Enter date with [{year} {month} {day}] format: ");
+    int day, month, year;
 
-    int product_index;
-    scanf("%d", &product_index);
+    scanf("%d %d %d", &year, &month, &day);
 
-    if (product_index > 0 && product_index <= PRODUCTS_INDEX){
-        product_index--;
+    for (int i = 0; i < SALES_INDEX; i++) {
+        if (sales[i].date.day == day && sales[i].date.month == month && sales[i].date.year == year){
+            printf("Customer: %s %s\n", sales[i].customer.name, sales[i].customer.lastName);
+            printf("List of products: \n");
+            for (int j = 0; j < sales[i].SALES_PRODUCTS_INDEX; j++) {
+                printf("name: %s\nbrand: %s\n", sales[i].products[j]->name, sales[i].products[j]->brand);
+                printf("max price: %d\n", sales[i].maxPrice);
+            }
+        }
     }
-    sales[sales_index].products[sales[sales_index].SALES_PRODUCTS_INDEX++] = &products[product_index];
-    sales[sales_index].maxPrice += products[product_index].price;
 }
 
 void createNewCart() {
@@ -271,96 +338,30 @@ void createNewCart() {
     }
 }
 
-void addNewCustomer() {
-    if (CUSTOMERS_INDEX < 100){
-        Customer customer;
+void addNewProductToExitingCart() {
+    printf("Select an exiting cart:\n");
+    showSales();
+    printf("Your selection: ");
 
-        printf("Enter customer name:");
-        scanf("%s", customer.name);
+    int sales_index;
+    scanf("%d", &sales_index);
 
-        printf("Enter customer lastName:");
-        scanf("%s", customer.lastName);
-
-        printf("Enter customer age: ");
-        scanf("%d", &customer.age);
-
-        printf("Enter customer id: ");
-        scanf("%d", &customer.id);
-
-        printf("Select customer gender:\n");
-        printf("1. Male\n");
-        printf("2. Female\n");
-        printf("Your selection:");
-        
-        setIntValue(&customer.gender, 1, 2);
-
-        customers[CUSTOMERS_INDEX++] = customer;
+    if (sales_index > 0 && sales_index <= SALES_INDEX){
+        sales_index--;
     }
 
-}
+    printf("Select an exiting product:\n");
+    showProducts();
+    printf("Your selection: ");
 
-void addNewProduct() {
-    if (PRODUCTS_INDEX < 100){
-        Product product;
+    int product_index;
+    scanf("%d", &product_index);
 
-        printf("Select product type\n");
-        printf("1. Food\n");
-        printf("2. Clothing\n");
-        printf("3. Chemicals\n");
-        printf("Your selection: ");
-
-        setIntValue(&product.type, 1, 3);
-
-        printf("Enter product name: ");
-        scanf("%s", product.name);
-
-        printf("Enter product brand: ");
-        scanf("%s", product.brand);
-
-        printf("Enter product price: ");
-        scanf("%d", &product.price);
-
-        printf("Enter product id: ");
-        scanf("%d", &product.id);
-
-        products[PRODUCTS_INDEX++] = product;
+    if (product_index > 0 && product_index <= PRODUCTS_INDEX){
+        product_index--;
     }
-}
-
-void showCustomers() {
-    printf("Gender    Name    lastName    Age    Id\n");
-    for (int i = 0; i < CUSTOMERS_INDEX; ++i) {
-        printf("%d: ", i + 1);
-        switch (customers[i].gender) {
-            case 0:
-                printf("Male    ");
-                break;
-            case 1:
-                printf("Female    ");
-                break;
-        }
-        printf("%s    %s    %d    %d\n", customers[i].name, customers[i].lastName, customers[i].age, customers[i].id);
-    }
-}
-
-void showProducts() {
-    printf("   Type    Name    Brand   Price   Id\n");
-    for (int i = 0; i < PRODUCTS_INDEX; ++i) {
-        printf("%d: ", i + 1);
-        switch (products[i].type) {
-            case 0:
-                printf("Food    ");
-                break;
-            case 1:
-                printf("Clothing    ");
-                break;
-            case 2:
-                printf("Chemicals   ");
-                break;
-        }
-        printf("%s    %s    %d    %d\n", products[i].name, products[i].brand, products[i].price, products[i].id);
-    }
-
+    sales[sales_index].products[sales[sales_index].SALES_PRODUCTS_INDEX++] = &products[product_index];
+    sales[sales_index].maxPrice += products[product_index].price;
 }
 
 void showMainMenu(){
