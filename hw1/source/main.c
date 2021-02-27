@@ -52,17 +52,17 @@ typedef struct{
 /**
  * Prototype methods
  */
-void addNewCustomer();
-void addNewProduct();
-void showProducts();
-void showMainMenu();
-void showCustomers();
-void saleProducts();
-void createNewCart();
-void addNewProductToExitingCart();
-void showSales();
-void showSalesById();
-void showSalesByDay();
+void addNewCustomer(void);
+void addNewProduct(void);
+void showProducts(void);
+void showMainMenu(void);
+void showCustomers(void);
+void saleProducts(void);
+void createNewCart(void);
+void addNewProductToExitingCart(void);
+void showSales(void);
+void showSalesById(void);
+void showSalesByDay(void);
 
 // method using to set enumeration values
 void setIntValue(int *value, int min, int max);
@@ -70,14 +70,14 @@ void setIntValue(int *value, int min, int max);
 /**
  * Global values
  */
-static Customer customers[100];
-static int CUSTOMERS_INDEX = 0;
+Customer customers[100];
+int CUSTOMERS_INDEX = 0;
 
-static Product products[100];
-static int PRODUCTS_INDEX = 0;
+Product products[100];
+int PRODUCTS_INDEX = 0;
 
-static Sales sales[100];
-static int SALES_INDEX = 0;
+Sales sales[100];
+int SALES_INDEX = 0;
 
 /**
  * Main method
