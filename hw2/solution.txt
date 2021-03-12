@@ -12,4 +12,4 @@
 
 7) (p{pname} minus ((p times (sp rename p# as id)) where p# = id){pname});
 
-8)
+8) (((s rename city as cit) times ((summarize s per s{city} add count as np) where np > 1){city}) where cit = city){s#};
