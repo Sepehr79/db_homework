@@ -1,0 +1,15 @@
+1) p{city} union s{city};
+
+2) ((s rename s# as id) minus ((sp{s#} times (s rename s# as id)) where s# = id){id, sname, status, city}){city};
+
+3) (((((((s times (sp rename s# as id)) where s# = id){p#, status}) times (p rename p# as pid)) where p# = pid){status, weight, city}) where weight > 43 or status > 34){city};
+
+4) (s where status > 100){city};
+
+5) (((((p{pname, p#, weight}) times (sp rename p# as id)) where p# = id){pname, weight}) where weight > 10){pname};
+
+6) ((((((s times (sp rename s# as id)) where s# = id){p#, status}) times (p rename p# as pid)) where p# = pid) where status < 30){pname};
+
+7) (p{pname} minus ((p times (sp rename p# as id)) where p# = id){pname});
+
+8) (((s rename city as cit) times ((summarize s per s{city} add count as np) where np > 1){city}) where cit = city){s#};

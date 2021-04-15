@@ -1,0 +1,8 @@
+1. select distinct city from p, s where p.city = s.city;
+2. select city from(select * from (s NATURAL join sp) where s.sn != sp.sn);
+3. select city from ((p NATURAL join sp) NATURAL join s) where p.weight > 43 or s.status > 34;
+4. select distinct city from s where status > 100;
+5. select pname from (p NATURAL join sp) where p.weight > 10;
+6. select pname from ((s NATURAL join sp) NATURAL join p) where s.status < 30;
+7. select pname from (p NATURAL join sp) where p.pn != sp.pn;
+8. select sn from (s, s as ss) where s.city = ss.city and s.sn < ss.sn;
