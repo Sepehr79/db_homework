@@ -1,4 +1,4 @@
-1) p{city} union s{city};
+1) (((s rename city as cit) times p{city}) where cit = city){city};
 
 2) ((s rename s# as id) minus ((sp{s#} times (s rename s# as id)) where s# = id){id, sname, status, city}){city};
 
